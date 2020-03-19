@@ -1,0 +1,62 @@
+.centro {
+    align-content: center;
+    padding: 2em;
+    margin: 0.4em;
+    text-align: center;
+}
+
+.bg-indigo {
+    background-color: indigo;
+}
+
+.bg-blue {
+    background-color: blue;
+}
+
+.bg-green {
+    background-color: green;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+
+.bg-teal {
+    background-color: teal;
+}
+
+.bg-tomato {
+    background-color: tomato;
+}
+
+.bg-turquoise {
+    background-color: turquoise;
+}
+
+.bg-violet {
+    background-color: violet;
+}
+
+.bg-aqua {
+    background-color: aqua;
+}
+
+.bg-coral {
+    background-color: coral;
+}
+
+.bg-crimson {
+    background-color: crimson;
+}
+
+.bg-darkmagenta {
+    background-color: darkmagenta;
+}
+
+.bg-goldenrod {
+    background-color: goldenrod;
+}
+
+.bg-royalblue {
+    background-color: royalblue;
+}
