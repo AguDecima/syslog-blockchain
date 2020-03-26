@@ -21,7 +21,7 @@ export const enrollAdmin = async () => {
         const ca = new FabricCAServices(caInfo.url, { trustedRoots: caTLSCACerts, verify: false }, caInfo.caName);
 
         // creamos un nuevo archivo basado en la wallet para manejar identidades
-        const walletPath = path.join(__dirname, 'wallet');
+        const walletPath = path.join(process.cwd(), './network/wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 

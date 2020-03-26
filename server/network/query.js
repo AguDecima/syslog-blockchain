@@ -15,7 +15,7 @@ export const queryAuditoria = async ( auditoriaId ) => {
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // creamos un nuevo archivo basado en la wallet para manejar identidades
-        const walletPath = path.join(__dirname, 'wallet');
+        const walletPath = path.join(process.cwd(), './network/wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
@@ -34,7 +34,7 @@ export const queryAuditoria = async ( auditoriaId ) => {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('syslog');
+        const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
         const result = await contract.evaluateTransaction('queryAuditoria', auditoriaId);
@@ -51,7 +51,7 @@ export const queryAllAuditorias = async ( firstId, lastId) => {
         const ccpPath = path.resolve(__dirname, 'config.json');
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
-        const walletPath = path.join(__dirname, 'wallet');
+        const walletPath = path.join(process.cwd(), './network/wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
@@ -66,7 +66,7 @@ export const queryAllAuditorias = async ( firstId, lastId) => {
 
         const network = await gateway.getNetwork('mychannel');
 
-        const contract = network.getContract('syslog');
+        const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
         const result = await contract.evaluateTransaction('queryAllAuditorias', firstId, lastId);

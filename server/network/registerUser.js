@@ -20,12 +20,12 @@ export const registerUser = async () => {
         const ca = new FabricCAServices(caURL);
 
         // creamos un nuevo archivo basado en la wallet para manejar identidades
-        const walletPath = path.join(__dirname, 'wallet');
+        const walletPath = path.join(process.cwd(), './network/wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
         // verificamos si el usuario ya existe en la wallet
-        const userIdentity = await wallet.get('user1');
+        const userIdentity = await wallet.get('user2');
         if (userIdentity) {
             console.log('Una identidad con este usuario ya existe');
             return;
@@ -46,11 +46,11 @@ export const registerUser = async () => {
         // registramos y inscribimos el usuario, ademas lo metemos en la wallet
         const secret = await ca.register({
             affiliation: 'org1.department1',
-            enrollmentID: 'user1',
+            enrollmentID: 'user2',
             role: 'client'
         }, adminUser);
         const enrollment = await ca.enroll({
-            enrollmentID: 'user1',
+            enrollmentID: 'user2',
             enrollmentSecret: secret
         });
         const x509Identity = {
@@ -61,7 +61,7 @@ export const registerUser = async () => {
             mspId: 'Org1MSP',
             type: 'X.509',
         };
-        await wallet.put('user1', x509Identity);
+        await wallet.put('user2', x509Identity);
         console.log('El usuario se inscribio satisfactoriamente');
 
     } catch (error) {
