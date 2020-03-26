@@ -8,7 +8,7 @@ const { Gateway, Wallets } = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
 
-export const queryAuditoria = async ( auditoriaId ) => {
+const queryAuditoria = async ( auditoriaId, user, res ) => {
     try {
         // cagamos la configuracion de la red
         const ccpPath = path.resolve(__dirname, 'config.json');
@@ -46,7 +46,7 @@ export const queryAuditoria = async ( auditoriaId ) => {
     }
 }
 
-export const queryAllAuditorias = async ( firstId, lastId) => {
+const queryAllAuditorias = async ( firstId, lastId, user, res) => {
     try {
         const ccpPath = path.resolve(__dirname, 'config.json');
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -77,3 +77,9 @@ export const queryAllAuditorias = async ( firstId, lastId) => {
         process.exit(1);
     }
 }
+
+module.exports = {
+    queryAuditoria,
+    queryAllAuditorias
+}
+

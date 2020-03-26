@@ -4,6 +4,7 @@ const { verificaToken } = require('../middleware/auth');
 
 let AuditoriaController = require('../controllers/auditoria');
 
+router.get('/enroll-admin', AuditoriaController.inscribirAdmin);
 router.get('/auditorias', AuditoriaController.getAllAuditoria);
 router.get('/auditorias/:id', AuditoriaController.getByIdAuditoria);
 

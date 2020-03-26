@@ -9,7 +9,7 @@ const { Wallets } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 
-export const enrollAdmin = async () => {
+const enrollAdmin = async (res) => {
     try {
         // cargamos la configuracion de la red
         const ccpPath = path.resolve(__dirname,'config.json');
@@ -28,7 +28,10 @@ export const enrollAdmin = async () => {
         // verificamos si el administrador ya esta registrado en la wallet
         const identity = await wallet.get('admin');
         if (identity) {
-            console.log('Una identidad para el administrador ya esxiste en la wallet');
+            res.status(400).send({
+                mensaje: 'El admin ya se encuentra inscripto en la wallet',
+                status: false
+            });
             return;
         }
 
@@ -43,10 +46,20 @@ export const enrollAdmin = async () => {
             type: 'X.509',
         };
         await wallet.put('admin', x509Identity);
+        res.status(201).send({
+            mensaje: 'Se inscribio el usuario admin exitosamente y se lo importo a la billetera',
+            status: true
+        });
         console.log('Se inscribio el usuario admin exitosamente y se lo importo a la billetera');
 
     } catch (error) {
-        console.error(`Fallo al inscribir el usuario "admin": ${error}`);
-        process.exit(1);
+        res.status(201).send({
+            mensaje: `Fallo al inscribir el usuario "admin": ${error}`,
+            status: false
+        });
     }
+}
+
+module.exports = {
+    enrollAdmin
 }

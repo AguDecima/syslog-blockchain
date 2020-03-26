@@ -1,12 +1,17 @@
 let queries = require('../bd/conexion');
+let networkEnroll = require('../network/enrollAdmin');
+
+const inscribirAdmin = (req, res) => {
+    networkEnroll.enrollAdmin(res);
+}
 
 const getAllAuditoria = (req, res) => {
 
     queries.query('SELECT * FROM auditoria', (error, result) => {
         if (error) {
-            res.send(error);
+            res.status(400).send(error);
         } 
-        res.send(result);
+        res.status(200).send(result);
     });
 
 }
@@ -14,9 +19,8 @@ const getAllAuditoria = (req, res) => {
 const getByIdAuditoria = (req, res) => {
     let id = req.params.id;
     queries.query('SELECT * FROM auditoria WHERE id = ?', id, (error, result) => {
-        if (error) throw error;
- 
-        res.send(result);
+        if (error) res.status(400).send(error);
+        res.status(200).send(result);
     });
 
 }
@@ -26,5 +30,6 @@ const getByIdAuditoria = (req, res) => {
 
 module.exports = {
     getAllAuditoria,
-    getByIdAuditoria
+    getByIdAuditoria,
+    inscribirAdmin
 }

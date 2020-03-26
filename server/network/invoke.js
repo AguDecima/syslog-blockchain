@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const md5 = require('js-md5');
 
-export const createAuditoria = async (auditoria) => {
+const createAuditoria = async (auditoria, user, res) => {
     try {
         // load the network configuration
         const ccpPath = path.resolve(__dirname, 'config.json');
@@ -42,7 +42,7 @@ export const createAuditoria = async (auditoria) => {
 
         await contract.submitTransaction('createAuditoria', auditoria.id, auditoria.seqblock, auditoria.ipblock, 
         auditoria.tsblock, auditoria.crblock, auditoria.crblock, auditoria.fablock, auditoria.prblock, auditoria.deblock,
-        auditoria.tablock, md5(JSON.stringify(auditoria) );
+        auditoria.tablock, md5(JSON.stringify(auditoria)));
         console.log('La transaccion ha sid enviada');
 
         // Disconnect from the gateway.
@@ -54,3 +54,6 @@ export const createAuditoria = async (auditoria) => {
     }
 }
 
+module.exports = {
+    createAuditoria
+}

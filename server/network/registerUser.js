@@ -9,7 +9,7 @@ const FabricCAServices = require('fabric-ca-client');
 const fs = require('fs');
 const path = require('path');
 
-export const registerUser = async () => {
+const registerUser = async (user, res) => {
     try {
         // cargamos la configuracion de la red
         const ccpPath = path.resolve(__dirname,'config.json');
@@ -68,5 +68,9 @@ export const registerUser = async () => {
         console.error(`Error al registrar el usuario": ${error}`);
         process.exit(1);
     }
+}
+
+module.exports = {
+    registerUser
 }
 
