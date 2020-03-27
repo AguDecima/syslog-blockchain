@@ -41,11 +41,11 @@ const queryAuditoria = async ( auditoriaId, user, res ) => {
         const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
-        const result = await contract.evaluateTransaction('queryAuditoria', auditoriaId);
+        const result = await contract.evaluateTransaction('queryAuditoria', 'A'+auditoriaId);
 
         res.status(200).send({
             mensaje: `consulta realizada con exito`,
-            registro: result.toString(),
+            registro: JSON.parse(result.toString()),
             status: true
         });
 
@@ -58,7 +58,7 @@ const queryAuditoria = async ( auditoriaId, user, res ) => {
     }
 }
 
-const queryAllAuditorias = async ( firstId, lastId, user, res) => {
+const queryAllAuditorias = async ( user, res) => {
     try {
         const ccpPath = path.resolve(__dirname, 'config.json');
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
@@ -85,15 +85,13 @@ const queryAllAuditorias = async ( firstId, lastId, user, res) => {
         const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
-        const result = await contract.evaluateTransaction('queryAllAuditorias', firstId, lastId);
+        const result = await contract.evaluateTransaction('queryAllAuditorias', 'A0', 'A999');
 
         res.status(200).send({
             mensaje: `consulta realizada con exito`,
-            registros: result.toString(),
+            registros: JSON.parse(result.toString()),
             status: true
         });
-
-        console.log(`La transaccion ha sido evaluada, el resultado es: ${result.toString()}`);
 
     } catch (error) {
         res.status(500).send({

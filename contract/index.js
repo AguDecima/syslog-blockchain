@@ -4,7 +4,7 @@
 
 'use strict';
 
-const SysLog = require('./lib/syslog');
+const FabCar = require('./lib/fabcar');
 
-module.exports.SysLog = SysLog;
-module.exports.contracts = [ SysLog ];
+module.exports.FabCar = FabCar;
+module.exports.contracts = [ FabCar ];

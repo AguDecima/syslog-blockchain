@@ -43,9 +43,11 @@ const createAuditoria = async (auditoria, user, res) => {
         //id, seqblock , orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock
 
 
-        await contract.submitTransaction('createAuditoria', auditoria.id, auditoria.seqblock, auditoria.ipblock, 
-        auditoria.tsblock, auditoria.crblock, auditoria.crblock, auditoria.fablock, auditoria.prblock, auditoria.deblock,
+        await contract.submitTransaction('createAuditoria', auditoria.id, auditoria.seqblock, auditoria.orblock, auditoria.ipblock, 
+        auditoria.tsblock, auditoria.crblock, auditoria.fablock, auditoria.prblock, auditoria.deblock,
         auditoria.tablock, md5(JSON.stringify(auditoria)));
+
+        auditoria.hashblock = md5(JSON.stringify(auditoria))
 
         res.status(201).send({
             mensaje: `El registro se guardo correctamente`,

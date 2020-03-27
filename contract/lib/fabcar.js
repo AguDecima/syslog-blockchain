@@ -4,12 +4,12 @@
 
 'use strict';
 
-const { Contract } = require('./node_modules/fabric-contract-api');
+const { Contract } = require('fabric-contract-api');
 
-class SysLog extends Contract {
+class FabCar extends Contract {
 
     async initLedger(ctx) {
-    
+
     }
 
     async queryAuditoria(ctx, AuditoriaId) {
@@ -21,16 +21,16 @@ class SysLog extends Contract {
     }
 
     // id, secuencia, organizacion, ip, fecha y hora, level, facility, prioridad, mensaje, tag, hash
-    async createAuditoria(ctx, id, seqblock , orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock) {
+    async createAuditoria(ctx, id, seqblock, orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock) {
         const auditoria = {
-           id, seqblock, orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock
+            id, seqblock, orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock
         };
-        await ctx.stub.putState(id, Buffer.from(JSON.stringify(auditoria)));
+        await ctx.stub.putState('A'+id, Buffer.from(JSON.stringify(auditoria)));
     }
 
     async queryAllAuditorias(ctx, firstId, lastId) {
         const allResults = [];
-        for await (const {key, value} of ctx.stub.getStateByRange(firstId, lastId)) {
+        for await (const { key, value } of ctx.stub.getStateByRange(firstId, lastId)) {
             const strValue = Buffer.from(value).toString('utf8');
             let record;
             try {
@@ -41,9 +41,9 @@ class SysLog extends Contract {
             }
             allResults.push({ Key: key, Record: record });
         }
-        console.info(allResults);
         return JSON.stringify(allResults);
     }
+
 }
 
-module.exports = SysLog;
+module.exports = FabCar;

@@ -35,20 +35,8 @@ const queryAllAuditorias = (req, res) => {
 
     let user = req.params.user;
     
-    queries.query('SELECT MAX(id) as id FROM auditoria', (error, query1) => {
-        if (error) {
-            res.status(400).send(error);
-        } 
-        queries.query('SELECT MIN(id) as id FROM auditoria', (error, query2) => {
-            if (error) {
-                res.status(400).send(error);
-            } 
-            
-            networkQuery.queryAllAuditorias((query1[0].id).toString(),(query2[0].id).toString(),user.toString(), res);
+    networkQuery.queryAllAuditorias(user.toString(), res);
 
-        });
-        
-    });
 }
 
 // ----------- FIN BLOCKCHAIN --------------------- //
