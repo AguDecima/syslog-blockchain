@@ -20,15 +20,19 @@ const queryAuditoria = async ( auditoriaId, user, res ) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // verificamos si el usuario ya esta inscripto en la wallet
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(user);
         if (!identity) {
+            res.status(400).send({
+                mensaje: `La identidad para el usuario '${user}' no existe, por favor registrese`,
+                status: true
+            });
             console.log('La identidad para el user1 no existe en la wallet');
             return;
         }
 
         // creamos un nuevo gateway para conectar con nuestro peer
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: user, discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -38,11 +42,19 @@ const queryAuditoria = async ( auditoriaId, user, res ) => {
 
         // Evaluate the specified transaction.
         const result = await contract.evaluateTransaction('queryAuditoria', auditoriaId);
-        console.log(`La transaccion ha sido evaluada, el resultado es: ${result.toString()}`);
+
+        res.status(200).send({
+            mensaje: `consulta realizada con exito`,
+            registro: result,
+            status: true
+        });
 
     } catch (error) {
+        res.status(500).send({
+            mensaje: `Error al enviar la transaccion: ${error}`,
+            status: true
+        });
         console.error(`Error el la transaccion: ${error}`);
-        process.exit(1);
     }
 }
 
@@ -55,14 +67,18 @@ const queryAllAuditorias = async ( firstId, lastId, user, res) => {
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(user);
         if (!identity) {
+            res.status(400).send({
+                mensaje: `La identidad para el usuario '${user}' no existe, por favor registrese`,
+                status: true
+            });
             console.log('La identidad para el user1 no existe en la wallet');
             return;
         }
 
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: user, discovery: { enabled: true, asLocalhost: true } });
 
         const network = await gateway.getNetwork('mychannel');
 
@@ -70,11 +86,21 @@ const queryAllAuditorias = async ( firstId, lastId, user, res) => {
 
         // Evaluate the specified transaction.
         const result = await contract.evaluateTransaction('queryAllAuditorias', firstId, lastId);
+
+        res.status(200).send({
+            mensaje: `consulta realizada con exito`,
+            registros: result,
+            status: true
+        });
+
         console.log(`La transaccion ha sido evaluada, el resultado es: ${result.toString()}`);
 
     } catch (error) {
+        res.status(500).send({
+            mensaje: `Error al enviar la transaccion: ${error}`,
+            status: true
+        });
         console.error(`Error el la transaccion: ${error}`);
-        process.exit(1);
     }
 }
 

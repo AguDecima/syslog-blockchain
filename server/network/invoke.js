@@ -21,21 +21,24 @@ const createAuditoria = async (auditoria, user, res) => {
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get('user1');
+        const identity = await wallet.get(user);
         if (!identity) {
-            console.log('La identidad para el user1 no existe en la wallet');
+            res.status(400).send({
+                mensaje: `La identidad para el usuario '${user}' no existe, por favor registrese`,
+                status: true
+            });
             return;
         }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
+        await gateway.connect(ccp, { wallet, identity: user, discovery: { enabled: true, asLocalhost: true } });
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('syslog');
+        const contract = network.getContract('fabcar');
 
         //id, seqblock , orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock
 
@@ -43,14 +46,22 @@ const createAuditoria = async (auditoria, user, res) => {
         await contract.submitTransaction('createAuditoria', auditoria.id, auditoria.seqblock, auditoria.ipblock, 
         auditoria.tsblock, auditoria.crblock, auditoria.crblock, auditoria.fablock, auditoria.prblock, auditoria.deblock,
         auditoria.tablock, md5(JSON.stringify(auditoria)));
-        console.log('La transaccion ha sid enviada');
+
+        res.status(201).send({
+            mensaje: `El registro se guardo correctamente`,
+            registro: auditoria,
+            status: true
+        });
 
         // Disconnect from the gateway.
         await gateway.disconnect();
 
     } catch (error) {
+        res.status(500).send({
+            mensaje: `Error al enviar la transaccion: ${error}`,
+            status: true
+        });
         console.error(`Error al enviar la transaccion: ${error}`);
-        process.exit(1);
     }
 }
 
