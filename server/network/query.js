@@ -45,7 +45,7 @@ const queryAuditoria = async ( auditoriaId, user, res ) => {
 
         res.status(200).send({
             mensaje: `consulta realizada con exito`,
-            registro: result,
+            registro: result.toString(),
             status: true
         });
 
@@ -89,7 +89,7 @@ const queryAllAuditorias = async ( firstId, lastId, user, res) => {
 
         res.status(200).send({
             mensaje: `consulta realizada con exito`,
-            registros: result,
+            registros: result.toString(),
             status: true
         });
 

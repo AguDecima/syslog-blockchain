@@ -20,7 +20,7 @@ const saveRegistroHLedger = (req, res) => {
     let auditoria = req.body;
     let user = req.params.user;
 
-    networkInvoke.createAuditoria(auditoria, user, res);
+    networkInvoke.createAuditoria(auditoria, user.toString(), res);
 
 }
 
@@ -28,7 +28,7 @@ const queryAuditoria = (req, res) => {
     let user = req.params.user;
     let idAuditoria = req.params.id;
 
-    networkQuery.queryAuditoria(idAuditoria, user, res); 
+    networkQuery.queryAuditoria(idAuditoria.toString(), user.toString(), res); 
 }
 
 const queryAllAuditorias = (req, res) => {
@@ -44,7 +44,7 @@ const queryAllAuditorias = (req, res) => {
                 res.status(400).send(error);
             } 
             
-            networkQuery.queryAllAuditorias(query1[0].id,query2[0].id,user, res);
+            networkQuery.queryAllAuditorias((query1[0].id).toString(),(query2[0].id).toString(),user.toString(), res);
 
         });
         
