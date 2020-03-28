@@ -41,7 +41,7 @@ const queryAuditoria = async ( auditoriaId, user, res ) => {
         const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
-        const result = await contract.evaluateTransaction('queryAuditoria', 'A'+auditoriaId);
+        const result = await contract.evaluateTransaction('queryAuditoria', auditoriaId);
 
         res.status(200).send({
             mensaje: `consulta realizada con exito`,
@@ -85,7 +85,7 @@ const queryAllAuditorias = async ( user, res) => {
         const contract = network.getContract('fabcar');
 
         // Evaluate the specified transaction.
-        const result = await contract.evaluateTransaction('queryAllAuditorias', 'A0', 'A999');
+        const result = await contract.evaluateTransaction('queryAllAuditorias', '0', '9999999999999');
 
         res.status(200).send({
             mensaje: `consulta realizada con exito`,

@@ -25,7 +25,7 @@ class FabCar extends Contract {
         const auditoria = {
             id, seqblock, orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock
         };
-        await ctx.stub.putState('A'+id, Buffer.from(JSON.stringify(auditoria)));
+        await ctx.stub.putState(id.toString() + orblock.toString() + ipblock.toString() , Buffer.from(JSON.stringify(auditoria)));
     }
 
     async queryAllAuditorias(ctx, firstId, lastId) {
