@@ -25,7 +25,7 @@ const createAuditoria = async (auditoria, user, res) => {
         if (!identity) {
             res.status(400).send({
                 mensaje: `La identidad para el usuario '${user}' no existe, por favor registrese`,
-                status: true
+                status: false
             });
             return;
         }
@@ -61,7 +61,7 @@ const createAuditoria = async (auditoria, user, res) => {
     } catch (error) {
         res.status(500).send({
             mensaje: `Error al enviar la transaccion: ${error}`,
-            status: true
+            status: false
         });
         console.error(`Error al enviar la transaccion: ${error}`);
     }

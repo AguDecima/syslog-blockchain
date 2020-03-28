@@ -75,7 +75,7 @@ const registerUser = async (user, res) => {
     } catch (error) {
         res.status(500).send({
             mensaje: `Error al registrar el usuario": ${error}`,
-            status: true
+            status: false
         });
     }
 }

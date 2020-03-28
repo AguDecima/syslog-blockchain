@@ -21,3 +21,56 @@ export const getByIdAuditoria = async (id) => {
     return res;
 }
 
+// ----------------- HYPER LEDGER --------------- //
+
+export const getAllAuditoriasHyperLedger = async (user) => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let res = await axios.get(`${url}/query-auditorias/${user}`,{headers});
+    return res;
+}
+
+export const getByKeyAuditoriasHyperLedger = async (user, key) => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let res = await axios.get(`${url}/query-auditoria/${user}&${key}`,{headers});
+    return res;
+}
+
+export const setEnrollAdminHyperLedger = async () => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let res = await axios.get(`${url}/enroll-admin`,{headers});
+    return res;
+}
+
+export const setRegisterUserHyperLedger = async (user) => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let res = await axios.get(`${url}/enroll-user/${user}`,{headers});
+    return res;
+}
+
+export const setInvokeCreateHyperLedger = async (user, auditoria) => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let res = await axios.post(`${url}/invoke-create/${user}`, auditoria ,{headers});
+    return res;
+}
+
+
