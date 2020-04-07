@@ -4,7 +4,7 @@
 
 'use strict';
 
-const { Gateway, Wallets } = require('fabric-network');
+const { Gateway, FileSystemWallet } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 const md5 = require('md5');
@@ -17,11 +17,11 @@ const createAuditoria = async (auditoria, user, res) => {
 
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), './network/wallet');
-        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        const wallet = new FileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get(user);
+        const identity = await wallet.exists(user);
         if (!identity) {
             res.status(400).send({
                 mensaje: `La identidad para el usuario '${user}' no existe, por favor registrese`,

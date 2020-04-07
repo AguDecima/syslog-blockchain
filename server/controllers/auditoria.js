@@ -8,7 +8,7 @@ let networkQuery = require('../network/query');
 
 const inscribirUsuario = (req, res) => {
     let usuario = req.params.user;
-    networkRegisterUser.registerUser(usuario, res);
+    networkRegisterUser.registerUser(usuario.toString(), res);
 
 }
 
