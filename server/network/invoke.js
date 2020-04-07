@@ -7,7 +7,7 @@
 const { Gateway, Wallets } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
-const md5 = require('js-md5');
+const md5 = require('md5');
 
 const createAuditoria = async (auditoria, user, res) => {
     try {

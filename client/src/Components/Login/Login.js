@@ -24,6 +24,7 @@ function Login({ history }) {
         e.preventDefault();
 
         if (nameuser === 'admin' && password === 'admin') {
+            
             history.push('/home');
         }else{
             Swal.fire({
