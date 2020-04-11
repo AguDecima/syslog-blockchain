@@ -40,14 +40,32 @@ const createAuditoria = async (auditoria, user, res) => {
         // Get the contract from the network.
         const contract = network.getContract('fabcar');
 
+        // generamos hash con bcrypt
+        const bcrypt = require('bcrypt');   
+        const saltRounds = 10;
+
+        let fecha = new Date(auditoria.tsblock)
+
+        let auditoriaHash = {
+            id: auditoria.id,
+            seqblock: auditoria.seqblock, orblock: auditoria.orblock,
+            ipblock: auditoria.ipblock, tsblock: fecha.toString(),
+            crblock: auditoria.crblock, fablock: auditoria.fablock,
+            prblock: auditoria.prblock, deblock: auditoria.deblock,
+            tablock: auditoria.tablock
+        }
+
+        console.log(auditoriaHash)
+
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hash = bcrypt.hashSync(JSON.stringify(auditoriaHash), salt);
+
         //id, seqblock , orblock, ipblock, tsblock, crblock, fablock, prblock, deblock, tablock, hashblock
-
-
         await contract.submitTransaction('createAuditoria', auditoria.id, auditoria.seqblock, auditoria.orblock, auditoria.ipblock, 
         auditoria.tsblock, auditoria.crblock, auditoria.fablock, auditoria.prblock, auditoria.deblock,
-        auditoria.tablock, md5(JSON.stringify(auditoria)));
+        auditoria.tablock, hash );
 
-        auditoria.hashblock = md5(JSON.stringify(auditoria))
+        auditoria.hashblock = hash
 
         res.status(201).send({
             mensaje: `El registro se guardo correctamente`,

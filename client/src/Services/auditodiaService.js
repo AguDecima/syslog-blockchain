@@ -73,4 +73,17 @@ export const setInvokeCreateHyperLedger = async (user, auditoria) => {
     return res;
 }
 
+export const isCorrupted = async (id, hash) => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let data = {
+        hash
+    }
+    let res = await axios.post(`${url}/verificar-datos/${id}`, data ,{headers});
+    return res;
+}
+
 

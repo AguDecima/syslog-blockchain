@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom'
 
-import md5 from 'md5';
-
 // icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckDouble, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -10,7 +8,7 @@ import { faCheckDouble, faPlus } from '@fortawesome/free-solid-svg-icons'
 // services
 import {
     getAllAuditorias, getAllAuditoriasHyperLedger, getByKeyAuditoriasHyperLedger,
-    setInvokeCreateHyperLedger, getByIdAuditoria
+    setInvokeCreateHyperLedger, getByIdAuditoria //isCorrupted
 } from '../../Services/auditodiaService';
 
 // style
@@ -43,28 +41,13 @@ const Home = () => {
         }
     }, [isLoad]);
 
-    const toMD5 = (auditoria) => {
-        return md5(JSON.stringify({
-            id: auditoria.id,
-            seqblock: auditoria.secuencia,
-            orblock: auditoria.organizacion,
-            ipblock: auditoria.ip,
-            tsblock: auditoria.datetime,
-            crblock: auditoria.level,
-            fablock: auditoria.facility,
-            prblock: auditoria.prioridad,
-            deblock: auditoria.mensaje,
-            tablock: auditoria.tag
-        }));
-    }
-
     const saveAuditoria = async (auditoria) => {
         let auditoriaHP = {
             id: (auditoria.id).toString(),
             seqblock: (auditoria.secuencia).toString(),
             orblock: (auditoria.organizacion).toString(),
             ipblock: (auditoria.ip).toString(),
-            tsblock: (auditoria.datetime).toString(),
+            tsblock: auditoria.datetime,
             crblock: (auditoria.level).toString(),
             fablock: (auditoria.facility).toString(),
             prblock: (auditoria.prioridad).toString(),
@@ -98,21 +81,43 @@ const Home = () => {
                     });
                 }
             });
-
-       
-
     }
 
     const verificarAuditoria = (registro) => {
 
-        getByIdAuditoria(registro.Record.id)
+        /*isCorrupted(registro.Record.id, registro.Record.hashblock)
         .then( data => {
-            let auditoriaHP = data.data[0];
-            console.log( toMD5(auditoriaHP), registro.Record);
+            console.log(data);
         })
         .catch(error => {
             console.log(error.response);
-        });
+        });*/
+
+        getByIdAuditoria(registro.Record.id)
+        .then( data => {
+            console.log(data.data[0], registro.Record);
+            let registroBD = data.data[0];
+            let registroHL = registro.Record;
+            if( 
+                (registroBD.id).toString() === (registroHL.id).toString() &&
+                (registroBD.secuencia).toString() === (registroHL.seqblock).toString() &&
+                (registroBD.organizacion).toString() === (registroHL.orblock).toString() &&
+                (registroBD.ip).toString() === (registroHL.ipblock).toString() &&
+                (registroBD.datetime).toString() === (registroHL.tsblock).toString() &&
+                (registroBD.level).toString() === (registroHL.crblock).toString() &&
+                (registroBD.facility).toString() === (registroHL.fablock).toString() &&
+                (registroBD.prioridad).toString() === (registroHL.prblock).toString() &&
+                (registroBD.mensaje).toString() === (registroHL.deblock).toString() &&
+                (registroBD.tag).toString() === (registroHL.tablock).toString() 
+                ){
+                    console.log('iguales');
+                }else{
+                    console.log('no iguales');
+                }
+        })
+        .catch( error => {
+            console.log(error.response);
+        })
         
     }
 
