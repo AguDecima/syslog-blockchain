@@ -86,4 +86,13 @@ export const isCorrupted = async (id, hash) => {
     return res;
 }
 
+export const login = async (user) => {
+    //let token = (sessionStorage.getItem('token'));
+    let headers = {
+        "Content-Type" : "application/json",
+    //    "Authorization" : "Bearer ".concat(token)
+    }
+    let res = await axios.get(`${url}/login/${user}`,{headers});
+    return res;
+}
 

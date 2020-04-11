@@ -11,7 +11,7 @@ import { withRouter } from 'react-router-dom';
 // link
 import { Link } from 'react-router-dom';
 
-const Header = ({history}) => {
+const Header = ({ history }) => {
 
 
     const logOut = () => {
@@ -26,21 +26,24 @@ const Header = ({history}) => {
             </button>
 
             <div className="collapse navbar-collapse" id="navbarColor03">
-                    <ul className="navbar-nav mr-auto">
-                        <li className="nav-item active">
-                            <Link className="nav-link" to="/home">Inicio</Link>
-                        </li>
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item active">
+                        <Link className="nav-link" to="/home">Inicio</Link>
+                    </li>
+                    {(sessionStorage.getItem('user') === 'admin') ?
                         <li className="nav-item">
-                            <Link className="nav-link" to="/clientes">Consultas</Link>
+                            <Link className="nav-link" to="/usuarios">Usuarios</Link>
                         </li>
-                    </ul>
+                        : null
+                    }
+                </ul>
 
 
                 <div className="form-inline my-2 my-lg-0">
 
                     <div className="dropdown">
                         <button className="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <FontAwesomeIcon icon={faUser} />  ADMIN
+                            <FontAwesomeIcon icon={faUser} />  {sessionStorage.getItem('user').toUpperCase()}
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <button className="dropdown-item" >Configuraciones</button>

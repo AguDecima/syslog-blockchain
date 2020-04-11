@@ -10,6 +10,7 @@ import '../Assets/css/bootstrap.min.css'
 // components
 import Home from './Home/Home';
 import Login from './Login/Login';
+import AddUsuario from './Usuarios/AddUsuario';
 
 
 
@@ -23,6 +24,7 @@ const App = () => {
 
             <Route exact path='/' component={Login} />
             <Route exact path='/home' component={Home} />
+            <Route exact path='/usuarios' component={AddUsuario} />
 
           </Switch>
         </Fragment>

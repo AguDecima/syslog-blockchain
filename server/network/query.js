@@ -8,6 +8,43 @@ const { Gateway, FileSystemWallet } = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
 
+const isExistUser = async (user, res) => {
+
+    try {
+        // cagamos la configuracion de la red
+        const ccpPath = path.resolve(__dirname, 'config.json');
+        const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // creamos un nuevo archivo basado en la wallet para manejar identidades
+        const walletPath = path.join(process.cwd(), './network/wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // verificamos si el usuario ya esta inscripto en la wallet
+        const identity = await wallet.exists(user);
+        if (!identity) {
+            res.status(400).send({
+                mensaje: `La identidad para el usuario '${user}' no existe, por favor registrese.`,
+                status: false
+            });
+            return;
+        }else{
+            res.status(200).send({
+                mensaje: `Inicio de sesion valido.`,
+                status: true
+            });
+            return; 
+        }
+
+    } catch (error) {
+        res.status(400).send({
+            mensaje: `Error al conectar con la red de Blockchain`,
+            status: false
+        });
+    }
+
+}
+
 const queryAuditoria = async ( auditoriaId, user, res ) => {
     try {
         // cagamos la configuracion de la red
@@ -106,6 +143,7 @@ const queryAllAuditorias = async ( user, res) => {
 
 module.exports = {
     queryAuditoria,
-    queryAllAuditorias
+    queryAllAuditorias,
+    isExistUser
 }
 

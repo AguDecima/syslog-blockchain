@@ -12,7 +12,7 @@ router.get('/query-auditorias/:user', AuditoriaController.queryAllAuditorias);
 router.post('/invoke-create/:user', AuditoriaController.saveRegistroHLedger);
 router.post('/verificar-datos/:id', AuditoriaController.isCorrupted);
 
-
+router.get('/login/:user', AuditoriaController.login);
 router.get('/auditorias', AuditoriaController.getAllAuditoria);
 router.get('/auditorias/:id', AuditoriaController.getByIdAuditoria);
 

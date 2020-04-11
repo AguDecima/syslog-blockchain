@@ -4,6 +4,9 @@ import './Login.css';
 // router
 import { withRouter } from 'react-router-dom';
 
+//services
+import { login } from '../../Services/auditodiaService';
+
 // Sweet alert
 import Swal from 'sweetalert2';
 
@@ -23,17 +26,20 @@ function Login({ history }) {
     const LoginSubmit = (e) => {
         e.preventDefault();
 
-        if (nameuser === 'admin' && password === 'admin') {
-            
+        login(nameuser)
+        .then(data => {
+            console.log(data);
+            sessionStorage.setItem('user',nameuser);
             history.push('/home');
-        }else{
+        })
+        .catch(error => {
             Swal.fire({
                 text: 'usuario o contraseña incorrecta, intente nuevamente',
                 type: 'info',
                 showConfirmButton: false,
                 timer: 2000
             });
-        }
+        })
 
     }
 

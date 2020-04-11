@@ -102,8 +102,10 @@ const isCorrupted = (req, res) => {
 
 }
 
-
-
+const login = (req, res) => {
+    let user = req.params.user;
+    networkQuery.isExistUser(user,res);
+}
 
 module.exports = {
     getAllAuditoria,
@@ -113,5 +115,6 @@ module.exports = {
     queryAuditoria,
     queryAllAuditorias,
     saveRegistroHLedger,
-    isCorrupted
+    isCorrupted,
+    login
 }

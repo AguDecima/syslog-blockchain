@@ -31,8 +31,8 @@ const Home = () => {
                     console.log(data);
                     setRegistros(data.data)
                 });
-
-            getAllAuditoriasHyperLedger('user1')
+            let user = sessionStorage.getItem('user');
+            getAllAuditoriasHyperLedger(user)
                 .then(data => {
                     console.log(data.data.registros);
                     setRegistrosHL(data.data.registros);
@@ -54,11 +54,11 @@ const Home = () => {
             deblock: (auditoria.mensaje).toString(),
             tablock: (auditoria.tag).toString()
         }
-
-        getByKeyAuditoriasHyperLedger('user1', (auditoria.id).toString() + (auditoria.organizacion).toString() + (auditoria.ip).toString())
-            .then(data => {
+        let user = sessionStorage.getItem('user');
+        getByKeyAuditoriasHyperLedger(user, (auditoria.id).toString() + (auditoria.organizacion).toString() + (auditoria.ip).toString())
+            .then(async data => {
                 console.log(data);
-                if (data.data.status === true) {
+                if (await data.data.status === true) {
                     Swal.fire({
                         text: 'el registro ya existe en hyper ledger',
                         type: 'warning'
@@ -68,17 +68,17 @@ const Home = () => {
             .catch(error => {
                 console.log(error.response);
                 if (error.response.data.status === false) {
-                    setInvokeCreateHyperLedger('user1', auditoriaHP)
-                    .then(data => {
-                        console.log(data);
-                        Swal.fire({
-                            text: 'El registro de añadio correctamente en Hyper Ledger',
-                            type: 'success'
+                    setInvokeCreateHyperLedger(user, auditoriaHP)
+                        .then(data => {
+                            console.log(data);
+                            Swal.fire({
+                                text: 'El registro de añadio correctamente en Hyper Ledger',
+                                type: 'success'
+                            });
+                        })
+                        .catch(error => {
+                            console.log(error.response);
                         });
-                    })
-                    .catch(error => {
-                        console.log(error.response);
-                    });
                 }
             });
     }
@@ -94,31 +94,31 @@ const Home = () => {
         });*/
 
         getByIdAuditoria(registro.Record.id)
-        .then( data => {
-            console.log(data.data[0], registro.Record);
-            let registroBD = data.data[0];
-            let registroHL = registro.Record;
-            if( 
-                (registroBD.id).toString() === (registroHL.id).toString() &&
-                (registroBD.secuencia).toString() === (registroHL.seqblock).toString() &&
-                (registroBD.organizacion).toString() === (registroHL.orblock).toString() &&
-                (registroBD.ip).toString() === (registroHL.ipblock).toString() &&
-                (registroBD.datetime).toString() === (registroHL.tsblock).toString() &&
-                (registroBD.level).toString() === (registroHL.crblock).toString() &&
-                (registroBD.facility).toString() === (registroHL.fablock).toString() &&
-                (registroBD.prioridad).toString() === (registroHL.prblock).toString() &&
-                (registroBD.mensaje).toString() === (registroHL.deblock).toString() &&
-                (registroBD.tag).toString() === (registroHL.tablock).toString() 
-                ){
+            .then(data => {
+                console.log(data.data[0], registro.Record);
+                let registroBD = data.data[0];
+                let registroHL = registro.Record;
+                if (
+                    (registroBD.id).toString() === (registroHL.id).toString() &&
+                    (registroBD.secuencia).toString() === (registroHL.seqblock).toString() &&
+                    (registroBD.organizacion).toString() === (registroHL.orblock).toString() &&
+                    (registroBD.ip).toString() === (registroHL.ipblock).toString() &&
+                    (registroBD.datetime).toString() === (registroHL.tsblock).toString() &&
+                    (registroBD.level).toString() === (registroHL.crblock).toString() &&
+                    (registroBD.facility).toString() === (registroHL.fablock).toString() &&
+                    (registroBD.prioridad).toString() === (registroHL.prblock).toString() &&
+                    (registroBD.mensaje).toString() === (registroHL.deblock).toString() &&
+                    (registroBD.tag).toString() === (registroHL.tablock).toString()
+                ) {
                     console.log('iguales');
-                }else{
+                } else {
                     console.log('no iguales');
                 }
-        })
-        .catch( error => {
-            console.log(error.response);
-        })
-        
+            })
+            .catch(error => {
+                console.log(error.response);
+            })
+
     }
 
     return (
@@ -131,7 +131,7 @@ const Home = () => {
                     <table class="table mt-2">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Key</th>
+                                <th scope="col">Id</th>
                                 <th scope="col">Organizacion</th>
                                 <th scope="col">IP</th>
                                 <th scope="col">Dia y Hora</th>
@@ -146,7 +146,7 @@ const Home = () => {
                             {(registrosHL.map(registro => {
                                 return (
                                     <tr>
-                                        <td>{registro.Key}</td>
+                                        <td>{registro.Record.id}</td>
                                         <td>{registro.Record.orblock}</td>
                                         <td>{registro.Record.ipblock}</td>
                                         <td>{registro.Record.tsblock}</td>
@@ -180,7 +180,10 @@ const Home = () => {
                                 <th scope="col">Prioridad</th>
                                 <th scope="col">Nivel</th>
                                 <th scope="col">Mensaje</th>
-                                <th scope="col">Añadir</th>
+                                {(sessionStorage.getItem('user') === 'admin') ?
+                                    <th scope="col">Añadir</th>
+                                    : null
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -194,12 +197,15 @@ const Home = () => {
                                         <td>{registro.prioridad}</td>
                                         <td>{registro.level}</td>
                                         <td>{registro.mensaje}</td>
-                                        <td>
-                                            <button className="btn btn-info mr-2" title="añadir en blockchain"
-                                                onClick={() => saveAuditoria(registro)}>
-                                                Añadir <FontAwesomeIcon icon={faPlus} />
-                                            </button>
-                                        </td>
+                                        {(sessionStorage.getItem('user') === 'admin') ?
+                                            <td>
+                                                <button className="btn btn-info mr-2" title="añadir en blockchain"
+                                                    onClick={() => saveAuditoria(registro)}>
+                                                    Añadir <FontAwesomeIcon icon={faPlus} />
+                                                </button>
+                                            </td>
+                                            : null
+                                        }
                                     </tr>
                                 );
                             }))}
