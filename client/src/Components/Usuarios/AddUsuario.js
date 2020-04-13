@@ -1,7 +1,12 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom'
 import Header from '../Header/Header';
 
+// services 
+import { setRegisterUserHyperLedger } from '../../Services/auditodiaService';
+
+// Sweet alert
+import Swal from 'sweetalert2';
 
 
 const AddUsuario = () => {
@@ -11,6 +16,25 @@ const AddUsuario = () => {
     const addUsuario = (e) => {
         e.preventDefault();
         console.log(nombreUsuario);
+        setRegisterUserHyperLedger(nombreUsuario)
+        .then(res => {
+            console.log(res);
+            Swal.fire({
+                text: `El usuario : ${nombreUsuario} se registro correctamente.`,
+                type: 'info',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        })
+        .catch(error => {
+            console.log(error.response);
+            Swal.fire({
+                text: error.response.data.mensaje,
+                type: 'info',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
     }
 
     return (
