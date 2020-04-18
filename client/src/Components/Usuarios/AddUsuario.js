@@ -21,7 +21,7 @@ const AddUsuario = () => {
             console.log(res);
             Swal.fire({
                 text: `El usuario : ${nombreUsuario} se registro correctamente.`,
-                type: 'info',
+                type: 'success',
                 showConfirmButton: false,
                 timer: 2000
             });

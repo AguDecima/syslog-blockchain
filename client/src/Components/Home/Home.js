@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 
 const Home = () => {
 
+    const user = sessionStorage.getItem('user');
     const [isLoad, setIsLoad] = useState(true);
     const [registros, setRegistros] = useState([]);
     const [registrosHL, setRegistrosHL] = useState([]);
@@ -31,7 +32,7 @@ const Home = () => {
                     console.log(data);
                     setRegistros(data.data)
                 });
-            let user = sessionStorage.getItem('user');
+
             getAllAuditoriasHyperLedger(user)
                 .then(data => {
                     console.log(data.data.registros);
@@ -69,12 +70,17 @@ const Home = () => {
                 console.log(error.response);
                 if (error.response.data.status === false) {
                     setInvokeCreateHyperLedger(user, auditoriaHP)
-                        .then(data => {
+                        .then( async data => {
                             console.log(data);
                             Swal.fire({
                                 text: 'El registro de añadio correctamente en Hyper Ledger',
                                 type: 'success'
                             });
+                            await getAllAuditoriasHyperLedger(user)
+                                .then(data => {
+                                    console.log(data.data.registros);
+                                    setRegistrosHL(data.data.registros);
+                                });
                         })
                         .catch(error => {
                             console.log(error.response);
@@ -111,12 +117,27 @@ const Home = () => {
                     (registroBD.tag).toString() === (registroHL.tablock).toString()
                 ) {
                     console.log('iguales');
+                    Swal.fire({
+                        text: 'Se encontro el registro en la base de datos',
+                        title: 'Los datos coinciden',
+                        type: 'success'
+                    });
                 } else {
                     console.log('no iguales');
+                    Swal.fire({
+                        text: 'Se encontro el registro en la base de datos',
+                        title: 'Los datos fueron alterados',
+                        type: 'info'
+                    });
                 }
             })
             .catch(error => {
                 console.log(error.response);
+                Swal.fire({
+                    title: 'El registro no existe en la base de datos',
+                    text: 'Los datos fueron alterados o eliminados',
+                    type: 'warning'
+                });
             })
 
     }
