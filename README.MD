@@ -19,7 +19,11 @@ _Que cosas necesitas para instalar el software_
 _CONFIGURANDO LA RED PARA BLOCKCHAIN_
 
 ```
-Para configurar y generar la red de blockchain se debera seguir el siguiente [tutorial](https://hyperledger-fabric.readthedocs.io/en/release-1.4/write_first_app.html), deberemos instalar nuestro chaincode ubicado en la carpeta contract/lib/fabcar.js y correrlo desde el proyecto que nos provee el tutorial. Finalmente deberamos copiar el archivo de conexion (first-network/connection-org1.json) que genera la red y copiarlo en nuestro proyecto en el archivo ubicado en server/network/config.json.
+Para configurar y generar la red de blockchain se debera seguir el siguiente tutorial(https://hyperledger-fabric.readthedocs.io/en/release-1.4/write_first_app.html), 
+deberemos instalar nuestro chaincode ubicado en la carpeta contract/lib/fabcar.js y correrlo desde 
+el proyecto que nos provee el tutorial. Finalmente deberamos copiar el archivo de conexion 
+(first-network/connection-org1.json) que genera la red y copiarlo en nuestro proyecto en el 
+archivo ubicado en server/network/config.json.
 ```
 
 _BACKEND Y FRONTEND: NODE JS - EXPRESS-JS - REACT JS_
